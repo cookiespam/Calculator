@@ -1,5 +1,6 @@
 package com.it2107.assignment.assignment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         calculationScroll = (HorizontalScrollView) findViewById(R.id.calculationScroll);
         resultPanel = (HorizontalScrollView) findViewById(R.id.resultsPanel);
         addListenerOnButton();
+
     }
 
     public void addListenerOnButton() {
@@ -347,15 +349,13 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            startActivity(new Intent(MainActivity.this, AboutActivity.class));
         }
-
         return super.onOptionsItemSelected(item);
     }
 
     private String getUnicode(int unicode) {
         return new String(Character.toChars(unicode));
     }
-
 
 }
