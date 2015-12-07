@@ -1,8 +1,8 @@
 package com.it2107.assignment.assignment;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,26 +11,36 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
-import android.widget.TextView;
+
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 public class MainActivity extends AppCompatActivity implements OnClickListener {
     Button one, two, three, four, five, six, seven, eight, nine, zero, plus, minus, multiply, divide, clear, eq, decimal;
     EditText calculation;
-    TextView result;
-    HorizontalScrollView calculationScroll;
+    EditText result;
+    HorizontalScrollView calculationScroll, resultPanel;
     boolean decimalSwitch = true;
-
+    double total = 0.0;
+    double input = 0.0;
+    double lastInput = 0.0;
+    boolean isTotal = false;
+    boolean isFirstInput = true;
+    int clicked;
+    NumberFormat nf = new DecimalFormat("##.###");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//
+//      getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         calculation = (EditText) findViewById(R.id.calculation);
-        result = (TextView) findViewById(R.id.result);
+        result = (EditText) findViewById(R.id.result);
+        calculation.setTextColor(0xff757575);
+        result.setTextColor(0xff333333);
         calculationScroll = (HorizontalScrollView) findViewById(R.id.calculationScroll);
+        resultPanel = (HorizontalScrollView) findViewById(R.id.resultsPanel);
         addListenerOnButton();
     }
 
@@ -69,8 +79,17 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         divide.setOnClickListener(this);
         clear.setOnClickListener(this);
         eq.setOnClickListener(this);
-
-
+        clear.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                calculation.setText("");
+                result.setText("");
+                total = 0.0;
+                input = 0.0;
+                lastInput = 0.0;
+                return true;
+            }
+        });
     }
 
     public void onClick(View v) {
@@ -78,77 +97,132 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         switch (v.getId()) {
 
             case R.id.one:
-                calculation.append("1");
+                newInput();
+                result.append("1");
                 scrollFromRight();
                 break;
 
             case R.id.two:
-                calculation.append("2");
+                newInput();
+                result.append("2");
                 scrollFromRight();
                 break;
 
             case R.id.three:
-                calculation.append("3");
+                newInput();
+                result.append("3");
                 scrollFromRight();
                 break;
 
             case R.id.four:
-                calculation.append("4");
+                newInput();
+                result.append("4");
                 scrollFromRight();
                 break;
 
             case R.id.five:
-                calculation.append("5");
+                newInput();
+                result.append("5");
                 scrollFromRight();
                 break;
 
             case R.id.six:
-                calculation.append("6");
+                newInput();
+                result.append("6");
                 scrollFromRight();
                 break;
 
             case R.id.seven:
-                calculation.append("7");
+                newInput();
+                result.append("7");
                 scrollFromRight();
                 break;
 
             case R.id.eight:
-                calculation.append("8");
+                newInput();
+                result.append("8");
                 scrollFromRight();
                 break;
 
             case R.id.nine:
-                calculation.append("9");
+                newInput();
+                result.append("9");
                 scrollFromRight();
                 break;
 
             case R.id.zero:
-                calculation.append("0");
+                newInput();
+                result.append("0");
                 scrollFromRight();
                 break;
 
             case R.id.plus:
+                isFirstInput = false;
+                if (!result.getText().toString().equalsIgnoreCase("")) {
+                    lastInput = Double.parseDouble(result.getText().toString());
+                } else {
+                    lastInput = 0;
+                }
+                calculation.append(result.getText());
                 calculation.append(getUnicode(0x002B));
+                lockResultPanel();
                 scrollFromRight();
+                result(1);
+                result.setText(nf.format(total));
+                lastInput = 0.0;
+
                 break;
 
             case R.id.minus:
+                isFirstInput = false;
+                if (!result.getText().toString().equalsIgnoreCase("")) {
+                    lastInput = Double.parseDouble(result.getText().toString());
+                } else {
+                    lastInput = 0;
+                }
+                calculation.append(result.getText());
                 calculation.append(getUnicode(0x002D));
+                lockResultPanel();
                 scrollFromRight();
+                result(2);
+                result.setText(nf.format(total));
+                lastInput = 0.0;
+
                 break;
 
             case R.id.multiply:
+                isFirstInput = false;
+                result.setText(nf.format(total));
                 if (!calculation.getText().toString().isEmpty()){
-                    calculation.append(getUnicode(0x00D7));
-                    scrollFromRight();
+                    if (!calculation.getText().toString().endsWith(getUnicode(0x00D7)) &&
+                            !calculation.getText().toString().endsWith(getUnicode(0x00F7))) {
+                        lastInput = Double.parseDouble(result.getText().toString());
+                        calculation.append(result.getText());
+                        calculation.append(getUnicode(0x00D7));
+                        scrollFromRight();
+                        result(3);
+                        result.setText("");
+                        lastInput = 0.0;
+                    }
                 }
 
                 break;
 
             case R.id.divide:
+                isFirstInput = false;
+                result.setText(nf.format(total));
                 if (!calculation.getText().toString().isEmpty()) {
-                    calculation.append(getUnicode(0x00F7));
-                    scrollFromRight();
+                    if (!calculation.getText().toString().endsWith(getUnicode(0x00F7)) &&
+                            !calculation.getText().toString().endsWith(getUnicode(0x00D7))) {
+                        lastInput = Double.parseDouble(result.getText().toString());
+                        calculation.append(result.getText());
+                        calculation.append(getUnicode(0x00F7));
+                        scrollFromRight();
+                        result(4);
+                        result.setText("");
+                        lastInput = 0.0;
+                    }
+
                 }
                 break;
 
@@ -164,18 +238,81 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 
             case R.id.clear:
 
-                int length = calculation.getText().length();
-                if (length > 0) {
-                    calculation.getText().delete(length - 1, length);
+                if (!isTotal) {
+                    int length = result.getText().length();
+                    if (length > 0) {
+                        result.getText().delete(length - 1, length);
+                    }
                 }
                 break;
 
+            case R.id.eq:
+
+                switch (clicked) {
+                    case 1:
+                        total += input;
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                }
+                calculation.setText("");
+                result.setText(nf.format(total));
+                break;
         }
 
     }
 
-    public void scrollFromRight() {
-    //        new Handler().postDelayed(new Runnable() {
+    private double result(int operand) {
+        if (lastInput != 0.0) {
+            input = lastInput;
+        }
+
+        switch (operand) {
+            case 1:
+                total += input;
+                clicked = 1;
+                break;
+            case 2:
+                total = input;
+                total -= input;
+                clicked = 2;
+                break;
+            case 3:
+                total /= input;
+                clicked = 3;
+                break;
+            case 4:
+                total *= input;
+                clicked = 4;
+                break;
+            default:
+                break;
+        }
+        Log.d("input", nf.format(input));
+        Log.d("lastinput", nf.format(lastInput));
+        Log.d("total", nf.format(total));
+
+        return total;
+    }
+
+    private void lockResultPanel() {
+        isTotal = true;
+        result.setText("");
+    }
+
+    private void newInput() {
+        if (isTotal) {
+            result.setText("");
+        }
+        isTotal = false;
+    }
+
+    private void scrollFromRight() {
+        //        new Handler().postDelayed(new Runnable() {
 //            @Override
 //            public void run() {
 //                calculationScroll.scrollTo(calculationScroll.getRight(), calculationScroll.getTop());
@@ -185,6 +322,11 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         calculationScroll.postDelayed(new Runnable() {
             public void run() {
                 calculationScroll.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
+            }
+        }, 100L);
+        resultPanel.postDelayed(new Runnable() {
+            public void run() {
+                resultPanel.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
             }
         }, 100L);
     }
@@ -211,8 +353,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         return super.onOptionsItemSelected(item);
     }
 
-    public String getUnicode(int unicode){
+    private String getUnicode(int unicode) {
         return new String(Character.toChars(unicode));
     }
+
 
 }
