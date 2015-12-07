@@ -180,7 +180,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 if (isFirstInput) {
                     total = input2 * 2;
                 }
-                Log.d("total in minus method", nf.format(total));
                 calculation.append(result.getText());
                 calculation.append(getUnicode(0x002D));
                 result(2);
@@ -192,36 +191,51 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 break;
 
             case R.id.multiply:
-                result.setText(nf.format(total));
-                if (!calculation.getText().toString().isEmpty()){
-                    if (!calculation.getText().toString().endsWith(getUnicode(0x00D7)) &&
-                            !calculation.getText().toString().endsWith(getUnicode(0x00F7))) {
+//                if (!calculation.getText().toString().isEmpty()){
+//                    if (!calculation.getText().toString().endsWith(getUnicode(0x00D7)) &&
+//                            !calculation.getText().toString().endsWith(getUnicode(0x00F7))) {
                         input2 = Double.parseDouble(result.getText().toString());
-                        calculation.append(result.getText());
-                        calculation.append(getUnicode(0x00D7));
-                        scrollFromRight();
-                        result(3);
-                        result.setText("");
-                        input2 = 0.0;
-                    }
+                if (isFirstInput) {
+                    Log.d("my", "yes?");
+                    total = input2;
+                    calculation.append(result.getText());
+                    calculation.append(getUnicode(0x00D7));
+                    isFirstInput = false;
+                    input2 = 0.0;
+                    result.setText("");
+                } else {
+                    calculation.append(result.getText());
+                    calculation.append(getUnicode(0x00D7));
+                    result(3);
+                    lockResultPanel();
+                    result.setText(nf.format(total));
+                    scrollFromRight();
+                    input2 = 0.0;
                 }
+//
+//                    }
+//                }
 
                 break;
 
             case R.id.divide:
-                result.setText(nf.format(total));
-                if (!calculation.getText().toString().isEmpty()) {
-                    if (!calculation.getText().toString().endsWith(getUnicode(0x00F7)) &&
-                            !calculation.getText().toString().endsWith(getUnicode(0x00D7))) {
-                        input2 = Double.parseDouble(result.getText().toString());
-                        calculation.append(result.getText());
-                        calculation.append(getUnicode(0x00F7));
-                        scrollFromRight();
-                        result(4);
-                        result.setText("");
-                        input2 = 0.0;
-                    }
-
+                input2 = Double.parseDouble(result.getText().toString());
+                if (isFirstInput) {
+                    Log.d("my", "yes?");
+                    total = input2;
+                    calculation.append(result.getText());
+                    calculation.append(getUnicode(0x00F7));
+                    isFirstInput = false;
+                    input2 = 0.0;
+                    result.setText("");
+                } else {
+                    calculation.append(result.getText());
+                    calculation.append(getUnicode(0x00F7));
+                    result(4);
+                    lockResultPanel();
+                    result.setText(nf.format(total));
+                    scrollFromRight();
+                    input2 = 0.0;
                 }
                 break;
 
@@ -282,6 +296,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 break;
             case 3:
                 clicked = 3;
+                total *= input2;
                 break;
             case 4:
                 clicked = 4;
