@@ -23,8 +23,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     HorizontalScrollView calculationScroll, resultPanel;
     boolean decimalSwitch = true;
     double total = 0.0;
-    double input = 0.0;
-    double lastInput = 0.0;
+    //    double input1 = 0.0;
+    double input2 = 0.0;
     boolean isTotal = false;
     boolean isFirstInput = true;
     int clicked;
@@ -87,8 +87,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 calculation.setText("");
                 result.setText("");
                 total = 0.0;
-                input = 0.0;
-                lastInput = 0.0;
+//                input1 = 0.0;
+                input2 = 0.0;
+                isFirstInput = true;
                 return true;
             }
         });
@@ -159,70 +160,66 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 break;
 
             case R.id.plus:
-                isFirstInput = false;
                 if (!result.getText().toString().equalsIgnoreCase("")) {
-                    lastInput = Double.parseDouble(result.getText().toString());
+                    input2 = Double.parseDouble(result.getText().toString());
                 } else {
-                    lastInput = 0;
+                    input2 = 0;
                 }
                 calculation.append(result.getText());
                 calculation.append(getUnicode(0x002B));
                 lockResultPanel();
-                scrollFromRight();
                 result(1);
                 result.setText(nf.format(total));
-                lastInput = 0.0;
+                scrollFromRight();
+                input2 = 0.0;
 
                 break;
 
             case R.id.minus:
-                isFirstInput = false;
-                if (!result.getText().toString().equalsIgnoreCase("")) {
-                    lastInput = Double.parseDouble(result.getText().toString());
-                } else {
-                    lastInput = 0;
+                input2 = Double.parseDouble(result.getText().toString());
+                if (isFirstInput) {
+                    total = input2 * 2;
                 }
+                Log.d("total in minus method", nf.format(total));
                 calculation.append(result.getText());
                 calculation.append(getUnicode(0x002D));
-                lockResultPanel();
-                scrollFromRight();
                 result(2);
+                lockResultPanel();
                 result.setText(nf.format(total));
-                lastInput = 0.0;
-
+                scrollFromRight();
+                input2 = 0.0;
+                isFirstInput = false;
                 break;
 
             case R.id.multiply:
-                isFirstInput = false;
                 result.setText(nf.format(total));
                 if (!calculation.getText().toString().isEmpty()){
                     if (!calculation.getText().toString().endsWith(getUnicode(0x00D7)) &&
                             !calculation.getText().toString().endsWith(getUnicode(0x00F7))) {
-                        lastInput = Double.parseDouble(result.getText().toString());
+                        input2 = Double.parseDouble(result.getText().toString());
                         calculation.append(result.getText());
                         calculation.append(getUnicode(0x00D7));
                         scrollFromRight();
                         result(3);
                         result.setText("");
-                        lastInput = 0.0;
+                        input2 = 0.0;
                     }
                 }
 
                 break;
 
             case R.id.divide:
-                isFirstInput = false;
                 result.setText(nf.format(total));
                 if (!calculation.getText().toString().isEmpty()) {
                     if (!calculation.getText().toString().endsWith(getUnicode(0x00F7)) &&
                             !calculation.getText().toString().endsWith(getUnicode(0x00D7))) {
-                        lastInput = Double.parseDouble(result.getText().toString());
+                        input2 = Double.parseDouble(result.getText().toString());
                         calculation.append(result.getText());
                         calculation.append(getUnicode(0x00F7));
                         scrollFromRight();
                         result(4);
                         result.setText("");
-                        lastInput = 0.0;
+                        input2 = 0.0;
                     }
 
                 }
@@ -249,16 +246,19 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 break;
 
             case R.id.eq:
-
+                input2 = Double.parseDouble(result.getText().toString());
                 switch (clicked) {
                     case 1:
-                        total += input;
+                        total += input2;
                         break;
                     case 2:
+                        total -= input2;
                         break;
                     case 3:
+                        total *= input2;
                         break;
                     case 4:
+                        total /= input2;
                         break;
                 }
                 calculation.setText("");
@@ -269,33 +269,28 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     }
 
     private double result(int operand) {
-        if (lastInput != 0.0) {
-            input = lastInput;
-        }
 
         switch (operand) {
             case 1:
-                total += input;
                 clicked = 1;
+                total += input2;
+
                 break;
             case 2:
-                total = input;
-                total -= input;
                 clicked = 2;
+                total -= input2;
                 break;
             case 3:
-                total /= input;
                 clicked = 3;
                 break;
             case 4:
-                total *= input;
                 clicked = 4;
                 break;
             default:
                 break;
         }
-        Log.d("input", nf.format(input));
-        Log.d("lastinput", nf.format(lastInput));
+//        Log.d("input1", nf.format(input1));
+        Log.d("input2", nf.format(input2));
         Log.d("total", nf.format(total));
 
         return total;
