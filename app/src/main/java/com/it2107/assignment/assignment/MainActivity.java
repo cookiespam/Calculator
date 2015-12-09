@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     HorizontalScrollView calculationScroll, resultPanel;
     boolean decimalSwitch = true;
     double total = 0.0;
-    //    double input1 = 0.0;
+    double input1 = 0.0;
     double input2 = 0.0;
     boolean isTotal = false;
     boolean isFirstInput = true;
@@ -165,29 +165,48 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 } else {
                     input2 = 0;
                 }
+
                 calculation.append(result.getText());
                 calculation.append(getUnicode(0x002B));
+
                 lockResultPanel();
+
                 result(1);
+
                 result.setText(nf.format(total));
+
                 scrollFromRight();
+
                 input2 = 0.0;
 
                 break;
 
             case R.id.minus:
-                input2 = Double.parseDouble(result.getText().toString());
+                if (!result.getText().toString().equalsIgnoreCase("")) {
+                    input2 = Double.parseDouble(result.getText().toString());
+                } else {
+                    input2 = 0;
+                }
+
                 if (isFirstInput) {
                     total = input2 * 2;
                 }
+
                 calculation.append(result.getText());
                 calculation.append(getUnicode(0x002D));
+
                 result(2);
+
                 lockResultPanel();
+
                 result.setText(nf.format(total));
+
                 scrollFromRight();
+
                 input2 = 0.0;
+
                 isFirstInput = false;
+
                 break;
 
             case R.id.multiply:
@@ -221,7 +240,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             case R.id.divide:
                 input2 = Double.parseDouble(result.getText().toString());
                 if (isFirstInput) {
-                    Log.d("my", "yes?");
                     total = input2;
                     calculation.append(result.getText());
                     calculation.append(getUnicode(0x00F7));
@@ -296,10 +314,14 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 break;
             case 3:
                 clicked = 3;
-                total *= input2;
+                if (!isFirstInput) {
+                    total *= input2;
+                }
+
                 break;
             case 4:
                 clicked = 4;
+                total /= input2;
                 break;
             default:
                 break;
