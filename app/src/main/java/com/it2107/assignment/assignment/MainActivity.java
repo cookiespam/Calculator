@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     double input = 0.0;
     boolean isTotal = false;
     boolean isFirstInput = true;
-    boolean isEq = false;
     int clicked;
     NumberFormat nf = new DecimalFormat("##.###");
     @Override
@@ -91,8 +90,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 isFirstInput = true;
                 decimalSwitch = true;
                 isTotal = false;
-                isFirstInput = true;
-                isEq = false;
                 return true;
             }
         });
@@ -299,6 +296,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                         total /= input;
                         break;
                 }
+                lockResultPanel();
+                isFirstInput = true;
                 calculation.setText("");
                 result.setText(nf.format(total));
                 break;
