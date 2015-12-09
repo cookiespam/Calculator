@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -166,19 +165,23 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                     input = 0;
                 }
 
-                calculation.append(result.getText());
-                calculation.append(getUnicode(0x002B));
-
-                lockResultPanel();
-
-                result(1);
-
-                result.setText(nf.format(total));
-
-                scrollFromRight();
-
-                input = 0.0;
-
+                if (isFirstInput) {
+                    total = input;
+                    calculation.append(result.getText());
+                    calculation.append(getUnicode(0x002B));
+                    result(1);
+                    isFirstInput = false;
+                    input = 0.0;
+                    result.setText("");
+                } else {
+                    calculation.append(result.getText());
+                    calculation.append(getUnicode(0x00D7));
+                    result(1);
+                    lockResultPanel();
+                    result.setText(nf.format(total));
+                    scrollFromRight();
+                    input = 0.0;
+                }
                 break;
 
             case R.id.minus:
@@ -213,9 +216,12 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 //                if (!calculation.getText().toString().isEmpty()){
 //                    if (!calculation.getText().toString().endsWith(getUnicode(0x00D7)) &&
 //                            !calculation.getText().toString().endsWith(getUnicode(0x00F7))) {
-                input = Double.parseDouble(result.getText().toString());
+                if (!result.getText().toString().equalsIgnoreCase("")) {
+                    input = Double.parseDouble(result.getText().toString());
+                } else {
+                    input = 0;
+                }
                 if (isFirstInput) {
-                    Log.d("lol", "first input");
                     total = input;
                     calculation.append(result.getText());
                     calculation.append(getUnicode(0x00D7));
@@ -224,7 +230,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                     input = 0.0;
                     result.setText("");
                 } else {
-                    Log.d("lol", "second input");
                     calculation.append(result.getText());
                     calculation.append(getUnicode(0x00D7));
                     result(3);
@@ -240,7 +245,11 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 break;
 
             case R.id.divide:
-                input = Double.parseDouble(result.getText().toString());
+                if (!result.getText().toString().equalsIgnoreCase("")) {
+                    input = Double.parseDouble(result.getText().toString());
+                } else {
+                    input = 0;
+                }
                 if (isFirstInput) {
                     total = input;
                     calculation.append(result.getText());
@@ -310,8 +319,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         switch (operand) {
             case 1:
                 clicked = 1;
-                total += input;
-
+                if (!isFirstInput) {
+                    total += input;
+                }
                 break;
             case 2:
                 clicked = 2;
@@ -322,7 +332,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 if (!isFirstInput) {
                     total *= input;
                 }
-
                 break;
             case 4:
                 clicked = 4;
@@ -333,9 +342,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             default:
                 break;
         }
-//        Log.d("input1", nf.format(input1));
-        Log.d("input", nf.format(input));
-        Log.d("total", nf.format(total));
 
         return total;
     }
