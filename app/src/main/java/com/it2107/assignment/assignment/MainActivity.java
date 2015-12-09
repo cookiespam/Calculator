@@ -218,14 +218,16 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 //                            !calculation.getText().toString().endsWith(getUnicode(0x00F7))) {
                 input = Double.parseDouble(result.getText().toString());
                 if (isFirstInput) {
-                    Log.d("my", "yes?");
+                    Log.d("lol", "first input");
                     total = input;
                     calculation.append(result.getText());
                     calculation.append(getUnicode(0x00D7));
+                    result(3);
                     isFirstInput = false;
                     input = 0.0;
                     result.setText("");
                 } else {
+                    Log.d("lol", "second input");
                     calculation.append(result.getText());
                     calculation.append(getUnicode(0x00D7));
                     result(3);
@@ -246,6 +248,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                     total = input;
                     calculation.append(result.getText());
                     calculation.append(getUnicode(0x00F7));
+                    result(4);
                     isFirstInput = false;
                     input = 0.0;
                     result.setText("");
@@ -324,7 +327,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 break;
             case 4:
                 clicked = 4;
-                total /= input;
+                if (!isFirstInput) {
+                    total /= input;
+                }
                 break;
             default:
                 break;
