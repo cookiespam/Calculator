@@ -23,10 +23,10 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     HorizontalScrollView calculationScroll, resultPanel;
     boolean decimalSwitch = true;
     double total = 0.0;
-    double input1 = 0.0;
-    double input2 = 0.0;
+    double input = 0.0;
     boolean isTotal = false;
     boolean isFirstInput = true;
+    boolean isEq = false;
     int clicked;
     NumberFormat nf = new DecimalFormat("##.###");
     @Override
@@ -87,9 +87,12 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 calculation.setText("");
                 result.setText("");
                 total = 0.0;
-//                input1 = 0.0;
-                input2 = 0.0;
+                input = 0.0;
                 isFirstInput = true;
+                decimalSwitch = true;
+                isTotal = false;
+                isFirstInput = true;
+                isEq = false;
                 return true;
             }
         });
@@ -161,9 +164,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 
             case R.id.plus:
                 if (!result.getText().toString().equalsIgnoreCase("")) {
-                    input2 = Double.parseDouble(result.getText().toString());
+                    input = Double.parseDouble(result.getText().toString());
                 } else {
-                    input2 = 0;
+                    input = 0;
                 }
 
                 calculation.append(result.getText());
@@ -177,19 +180,19 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 
                 scrollFromRight();
 
-                input2 = 0.0;
+                input = 0.0;
 
                 break;
 
             case R.id.minus:
                 if (!result.getText().toString().equalsIgnoreCase("")) {
-                    input2 = Double.parseDouble(result.getText().toString());
+                    input = Double.parseDouble(result.getText().toString());
                 } else {
-                    input2 = 0;
+                    input = 0;
                 }
 
                 if (isFirstInput) {
-                    total = input2 * 2;
+                    total = input * 2;
                 }
 
                 calculation.append(result.getText());
@@ -203,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 
                 scrollFromRight();
 
-                input2 = 0.0;
+                input = 0.0;
 
                 isFirstInput = false;
 
@@ -213,14 +216,14 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 //                if (!calculation.getText().toString().isEmpty()){
 //                    if (!calculation.getText().toString().endsWith(getUnicode(0x00D7)) &&
 //                            !calculation.getText().toString().endsWith(getUnicode(0x00F7))) {
-                        input2 = Double.parseDouble(result.getText().toString());
+                input = Double.parseDouble(result.getText().toString());
                 if (isFirstInput) {
                     Log.d("my", "yes?");
-                    total = input2;
+                    total = input;
                     calculation.append(result.getText());
                     calculation.append(getUnicode(0x00D7));
                     isFirstInput = false;
-                    input2 = 0.0;
+                    input = 0.0;
                     result.setText("");
                 } else {
                     calculation.append(result.getText());
@@ -229,7 +232,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                     lockResultPanel();
                     result.setText(nf.format(total));
                     scrollFromRight();
-                    input2 = 0.0;
+                    input = 0.0;
                 }
 //
 //                    }
@@ -238,13 +241,13 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 break;
 
             case R.id.divide:
-                input2 = Double.parseDouble(result.getText().toString());
+                input = Double.parseDouble(result.getText().toString());
                 if (isFirstInput) {
-                    total = input2;
+                    total = input;
                     calculation.append(result.getText());
                     calculation.append(getUnicode(0x00F7));
                     isFirstInput = false;
-                    input2 = 0.0;
+                    input = 0.0;
                     result.setText("");
                 } else {
                     calculation.append(result.getText());
@@ -253,7 +256,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                     lockResultPanel();
                     result.setText(nf.format(total));
                     scrollFromRight();
-                    input2 = 0.0;
+                    input = 0.0;
                 }
                 break;
 
@@ -278,19 +281,19 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 break;
 
             case R.id.eq:
-                input2 = Double.parseDouble(result.getText().toString());
+                input = Double.parseDouble(result.getText().toString());
                 switch (clicked) {
                     case 1:
-                        total += input2;
+                        total += input;
                         break;
                     case 2:
-                        total -= input2;
+                        total -= input;
                         break;
                     case 3:
-                        total *= input2;
+                        total *= input;
                         break;
                     case 4:
-                        total /= input2;
+                        total /= input;
                         break;
                 }
                 calculation.setText("");
@@ -305,29 +308,29 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         switch (operand) {
             case 1:
                 clicked = 1;
-                total += input2;
+                total += input;
 
                 break;
             case 2:
                 clicked = 2;
-                total -= input2;
+                total -= input;
                 break;
             case 3:
                 clicked = 3;
                 if (!isFirstInput) {
-                    total *= input2;
+                    total *= input;
                 }
 
                 break;
             case 4:
                 clicked = 4;
-                total /= input2;
+                total /= input;
                 break;
             default:
                 break;
         }
 //        Log.d("input1", nf.format(input1));
-        Log.d("input2", nf.format(input2));
+        Log.d("input", nf.format(input));
         Log.d("total", nf.format(total));
 
         return total;
