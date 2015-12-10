@@ -263,10 +263,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 break;
 
             case R.id.decimal:
-                if (!calculation.getText().toString().isEmpty()) {
-                    if (!calculation.getText().toString().endsWith(".") && decimalSwitch) {
-                        calculation.append(".");
-
+                if (!result.getText().toString().isEmpty() && !isTotal) {
+                    if (!result.getText().toString().endsWith(".") && decimalSwitch) {
+                        result.append(".");
                         decimalSwitch = false;
                     }
                 }
@@ -302,6 +301,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 isFirstInput = true;
                 calculation.setText("");
                 result.setText(nf.format(total));
+                decimalSwitch = true;
                 break;
         }
         scrollFromRight();
@@ -333,12 +333,13 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             default:
                 break;
         }
-
+        decimalSwitch = true;
         return total;
     }
 
     private void lockResultPanel() {
         isTotal = true;
+
     }
 
     private void newInput() {
