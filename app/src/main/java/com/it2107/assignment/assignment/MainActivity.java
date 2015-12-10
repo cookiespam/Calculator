@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     boolean isFirstInput = true;
     int clicked;
     NumberFormat nf = new DecimalFormat("##.###");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,61 +102,51 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             case R.id.one:
                 newInput();
                 result.append("1");
-                scrollFromRight();
                 break;
 
             case R.id.two:
                 newInput();
                 result.append("2");
-                scrollFromRight();
                 break;
 
             case R.id.three:
                 newInput();
                 result.append("3");
-                scrollFromRight();
                 break;
 
             case R.id.four:
                 newInput();
                 result.append("4");
-                scrollFromRight();
                 break;
 
             case R.id.five:
                 newInput();
                 result.append("5");
-                scrollFromRight();
                 break;
 
             case R.id.six:
                 newInput();
                 result.append("6");
-                scrollFromRight();
                 break;
 
             case R.id.seven:
                 newInput();
                 result.append("7");
-                scrollFromRight();
                 break;
 
             case R.id.eight:
                 newInput();
                 result.append("8");
-                scrollFromRight();
                 break;
 
             case R.id.nine:
                 newInput();
                 result.append("9");
-                scrollFromRight();
                 break;
 
             case R.id.zero:
                 newInput();
                 result.append("0");
-                scrollFromRight();
                 break;
 
             case R.id.plus:
@@ -165,23 +156,25 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                     input = 0;
                 }
 
+                calculation.append(result.getText());
+                calculation.append(getUnicode(0x002B));
+
                 if (isFirstInput) {
                     total = input;
-                    calculation.append(result.getText());
-                    calculation.append(getUnicode(0x002B));
-                    result(1);
+                    clicked = 1;
+                    result(clicked);
                     isFirstInput = false;
                     input = 0.0;
                     result.setText("");
                 } else {
-                    calculation.append(result.getText());
-                    calculation.append(getUnicode(0x00D7));
-                    result(1);
-                    lockResultPanel();
+                    result(clicked);
                     result.setText(nf.format(total));
-                    scrollFromRight();
                     input = 0.0;
+                    clicked = 1;
                 }
+
+                lockResultPanel();
+
                 break;
 
             case R.id.minus:
@@ -191,24 +184,24 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                     input = 0;
                 }
 
-                if (isFirstInput) {
-                    total = input * 2;
-                }
-
                 calculation.append(result.getText());
                 calculation.append(getUnicode(0x002D));
 
-                result(2);
+                if (isFirstInput) {
+                    total = input;
+                    clicked = 2;
+                    result(clicked);
+                    isFirstInput = false;
+                    input = 0.0;
+                    result.setText("");
+                } else {
+                    result(clicked);
+                    result.setText(nf.format(total));
+                    input = 0.0;
+                    clicked = 2;
+                }
 
                 lockResultPanel();
-
-                result.setText(nf.format(total));
-
-                scrollFromRight();
-
-                input = 0.0;
-
-                isFirstInput = false;
 
                 break;
 
@@ -221,23 +214,23 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 } else {
                     input = 0;
                 }
+                calculation.append(result.getText());
+                calculation.append(getUnicode(0x00D7));
+
                 if (isFirstInput) {
                     total = input;
-                    calculation.append(result.getText());
-                    calculation.append(getUnicode(0x00D7));
-                    result(3);
+                    clicked = 3;
+                    result(clicked);
                     isFirstInput = false;
                     input = 0.0;
                     result.setText("");
                 } else {
-                    calculation.append(result.getText());
-                    calculation.append(getUnicode(0x00D7));
-                    result(3);
-                    lockResultPanel();
+                    result(clicked);
                     result.setText(nf.format(total));
-                    scrollFromRight();
                     input = 0.0;
+                    clicked = 3;
                 }
+                lockResultPanel();
 //
 //                    }
 //                }
@@ -250,30 +243,30 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 } else {
                     input = 0;
                 }
+                calculation.append(result.getText());
+                calculation.append(getUnicode(0x00F7));
+
                 if (isFirstInput) {
                     total = input;
-                    calculation.append(result.getText());
-                    calculation.append(getUnicode(0x00F7));
-                    result(4);
+                    clicked = 4;
+                    result(clicked);
                     isFirstInput = false;
                     input = 0.0;
                     result.setText("");
                 } else {
-                    calculation.append(result.getText());
-                    calculation.append(getUnicode(0x00F7));
-                    result(4);
-                    lockResultPanel();
+                    result(clicked);
                     result.setText(nf.format(total));
-                    scrollFromRight();
                     input = 0.0;
+                    clicked = 4;
                 }
+                lockResultPanel();
                 break;
 
             case R.id.decimal:
                 if (!calculation.getText().toString().isEmpty()) {
                     if (!calculation.getText().toString().endsWith(".") && decimalSwitch) {
                         calculation.append(".");
-                        scrollFromRight();
+
                         decimalSwitch = false;
                     }
                 }
@@ -311,30 +304,28 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 result.setText(nf.format(total));
                 break;
         }
-
+        scrollFromRight();
     }
 
-    private double result(int operand) {
+    private double result(int clicked) {
 
-        switch (operand) {
+        switch (clicked) {
             case 1:
-                clicked = 1;
                 if (!isFirstInput) {
                     total += input;
                 }
                 break;
             case 2:
-                clicked = 2;
-                total -= input;
+                if (!isFirstInput) {
+                    total -= input;
+                }
                 break;
             case 3:
-                clicked = 3;
                 if (!isFirstInput) {
                     total *= input;
                 }
                 break;
             case 4:
-                clicked = 4;
                 if (!isFirstInput) {
                     total /= input;
                 }
@@ -348,7 +339,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 
     private void lockResultPanel() {
         isTotal = true;
-        result.setText("");
     }
 
     private void newInput() {
@@ -359,13 +349,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     }
 
     private void scrollFromRight() {
-        //        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                calculationScroll.scrollTo(calculationScroll.getRight(), calculationScroll.getTop());
-//            }
-//
-//        }, 100L);
         calculationScroll.postDelayed(new Runnable() {
             public void run() {
                 calculationScroll.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
