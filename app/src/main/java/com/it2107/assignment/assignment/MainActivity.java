@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//      getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         calculation = (EditText) findViewById(R.id.calculation);
@@ -164,15 +163,13 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                     clicked = 1;
                     result(clicked);
                     isFirstInput = false;
-                    input = 0.0;
                     result.setText("");
                 } else {
                     result(clicked);
                     result.setText(nf.format(total));
-                    input = 0.0;
                     clicked = 1;
                 }
-
+                input = 0.0;
                 lockResultPanel();
 
                 break;
@@ -192,23 +189,19 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                     clicked = 2;
                     result(clicked);
                     isFirstInput = false;
-                    input = 0.0;
                     result.setText("");
                 } else {
                     result(clicked);
                     result.setText(nf.format(total));
-                    input = 0.0;
+
                     clicked = 2;
                 }
-
+                input = 0.0;
                 lockResultPanel();
 
                 break;
 
             case R.id.multiply:
-//                if (!calculation.getText().toString().isEmpty()){
-//                    if (!calculation.getText().toString().endsWith(getUnicode(0x00D7)) &&
-//                            !calculation.getText().toString().endsWith(getUnicode(0x00F7))) {
                 if (!result.getText().toString().equalsIgnoreCase("")) {
                     input = Double.parseDouble(result.getText().toString());
                 } else {
@@ -222,18 +215,14 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                     clicked = 3;
                     result(clicked);
                     isFirstInput = false;
-                    input = 0.0;
                     result.setText("");
                 } else {
                     result(clicked);
                     result.setText(nf.format(total));
-                    input = 0.0;
                     clicked = 3;
                 }
+                input = 0.0;
                 lockResultPanel();
-//
-//                    }
-//                }
 
                 break;
 
@@ -251,14 +240,13 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                     clicked = 4;
                     result(clicked);
                     isFirstInput = false;
-                    input = 0.0;
                     result.setText("");
                 } else {
                     result(clicked);
                     result.setText(nf.format(total));
-                    input = 0.0;
                     clicked = 4;
                 }
+                input = 0.0;
                 lockResultPanel();
                 break;
 
@@ -308,30 +296,24 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     }
 
     private double result(int clicked) {
+        if (!isFirstInput) {
 
-        switch (clicked) {
-            case 1:
-                if (!isFirstInput) {
+            switch (clicked) {
+                case 1:
                     total += input;
-                }
-                break;
-            case 2:
-                if (!isFirstInput) {
+                    break;
+                case 2:
                     total -= input;
-                }
-                break;
-            case 3:
-                if (!isFirstInput) {
+                    break;
+                case 3:
                     total *= input;
-                }
-                break;
-            case 4:
-                if (!isFirstInput) {
+                    break;
+                case 4:
                     total /= input;
-                }
-                break;
-            default:
-                break;
+                    break;
+                default:
+                    break;
+            }
         }
         decimalSwitch = true;
         return total;
