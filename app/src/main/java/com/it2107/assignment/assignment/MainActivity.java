@@ -149,105 +149,19 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 break;
 
             case R.id.plus:
-                if (!result.getText().toString().equalsIgnoreCase("")) {
-                    input = Double.parseDouble(result.getText().toString());
-                } else {
-                    input = 0;
-                }
-
-                calculation.append(result.getText());
-                calculation.append(getUnicode(0x002B));
-
-                if (isFirstInput) {
-                    total = input;
-                    clicked = 1;
-                    result(clicked);
-                    isFirstInput = false;
-                    result.setText("");
-                } else {
-                    result(clicked);
-                    result.setText(nf.format(total));
-                    clicked = 1;
-                }
-                input = 0.0;
-                lockResultPanel();
-
+                calculate(0x002B, 1);
                 break;
 
             case R.id.minus:
-                if (!result.getText().toString().equalsIgnoreCase("")) {
-                    input = Double.parseDouble(result.getText().toString());
-                } else {
-                    input = 0;
-                }
-
-                calculation.append(result.getText());
-                calculation.append(getUnicode(0x002D));
-
-                if (isFirstInput) {
-                    total = input;
-                    clicked = 2;
-                    result(clicked);
-                    isFirstInput = false;
-                    result.setText("");
-                } else {
-                    result(clicked);
-                    result.setText(nf.format(total));
-
-                    clicked = 2;
-                }
-                input = 0.0;
-                lockResultPanel();
-
+                calculate(0x002D, 2);
                 break;
 
             case R.id.multiply:
-                if (!result.getText().toString().equalsIgnoreCase("")) {
-                    input = Double.parseDouble(result.getText().toString());
-                } else {
-                    input = 0;
-                }
-                calculation.append(result.getText());
-                calculation.append(getUnicode(0x00D7));
-
-                if (isFirstInput) {
-                    total = input;
-                    clicked = 3;
-                    result(clicked);
-                    isFirstInput = false;
-                    result.setText("");
-                } else {
-                    result(clicked);
-                    result.setText(nf.format(total));
-                    clicked = 3;
-                }
-                input = 0.0;
-                lockResultPanel();
-
+                calculate(0x00D7, 3);
                 break;
 
             case R.id.divide:
-                if (!result.getText().toString().equalsIgnoreCase("")) {
-                    input = Double.parseDouble(result.getText().toString());
-                } else {
-                    input = 0;
-                }
-                calculation.append(result.getText());
-                calculation.append(getUnicode(0x00F7));
-
-                if (isFirstInput) {
-                    total = input;
-                    clicked = 4;
-                    result(clicked);
-                    isFirstInput = false;
-                    result.setText("");
-                } else {
-                    result(clicked);
-                    result.setText(nf.format(total));
-                    clicked = 4;
-                }
-                input = 0.0;
-                lockResultPanel();
+                calculate(0x00F7, 4);
                 break;
 
             case R.id.decimal:
@@ -295,6 +209,31 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         scrollFromRight();
     }
 
+    private void calculate(int unicode, int operand) {
+        if (!result.getText().toString().equalsIgnoreCase("")) {
+            input = Double.parseDouble(result.getText().toString());
+        } else {
+            input = 0;
+        }
+
+        calculation.append(result.getText());
+        calculation.append(getUnicode(unicode));
+
+        if (isFirstInput) {
+            total = input;
+            clicked = operand;
+            result(clicked);
+            isFirstInput = false;
+            result.setText("");
+        } else {
+            result(clicked);
+            result.setText(nf.format(total));
+            clicked = operand;
+        }
+        input = 0.0;
+        lockResultPanel();
+    }
+
     private double result(int clicked) {
         if (!isFirstInput) {
 
@@ -321,7 +260,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 
     private void lockResultPanel() {
         isTotal = true;
-
     }
 
     private void newInput() {
