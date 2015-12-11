@@ -17,6 +17,7 @@ import java.text.NumberFormat;
 
 public class MainActivity extends AppCompatActivity implements OnClickListener {
     Button one, two, three, four, five, six, seven, eight, nine, zero, plus, minus, multiply, divide, clear, eq, decimal;
+    Button history;
     EditText calculation;
     EditText result;
     HorizontalScrollView calculationScroll, resultPanel;
@@ -26,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     boolean isTotal = false;
     boolean isFirstInput = true;
     int clicked;
-    NumberFormat nf = new DecimalFormat("##.###");
+    NumberFormat nf = new DecimalFormat("###,###.###");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,13 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         calculationScroll = (HorizontalScrollView) findViewById(R.id.calculationScroll);
         resultPanel = (HorizontalScrollView) findViewById(R.id.resultsPanel);
         addListenerOnButton();
-
+        history = (Button) findViewById(R.id.history);
+        history.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, MemoryListActivity.class));
+            }
+        });
     }
 
     public void addListenerOnButton() {
@@ -184,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 break;
 
             case R.id.eq:
-                input = Double.parseDouble(result.getText().toString());
+                input = Double.parseDouble(result.getText().toString().replaceAll(",", ""));
                 switch (clicked) {
                     case 1:
                         total += input;
@@ -211,7 +218,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 
     private void calculate(int unicode, int operand) {
         if (!result.getText().toString().equalsIgnoreCase("")) {
-            input = Double.parseDouble(result.getText().toString());
+            input = Double.parseDouble(result.getText().toString().replaceAll(",", ""));
         } else {
             input = 0;
         }
