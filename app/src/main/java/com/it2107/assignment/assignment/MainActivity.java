@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     boolean isAlternateInput = true;
     boolean isFromHistory = false;
     int clicked; //operand selector
-    ArrayList<String> calculationsArr = new ArrayList<String>();
-    ArrayList<String> resultsArr = new ArrayList<String>();
+    ArrayList<String> calculationsArr = new ArrayList<>();
+    ArrayList<String> resultsArr = new ArrayList<>();
     NumberFormat nf = new DecimalFormat("###,###.###");
 
     @Override
@@ -221,7 +221,11 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 break;
 
             case R.id.eq:
-                input = Double.parseDouble(resultET.getText().toString().replaceAll(",", ""));
+                if (!resultET.getText().toString().equalsIgnoreCase("")) {
+                    input = Double.parseDouble(resultET.getText().toString().replaceAll(",", ""));
+                } else {
+                    input = 0;
+                }
                 switch (clicked) {
                     case 1:
                         total += input;
