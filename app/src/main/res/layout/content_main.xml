@@ -13,7 +13,6 @@
         android:id="@+id/numberContainers"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/drop_shadow"
         android:baselineAligned="false"
         android:orientation="vertical"
         android:padding="24dp">
