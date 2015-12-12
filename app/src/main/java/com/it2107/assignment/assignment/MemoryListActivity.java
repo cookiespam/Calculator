@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,68 +18,102 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class MemoryListActivity extends AppCompatActivity {
-
+    ArrayAdapter<String> adapter;
     ListView lv;
-
+    ArrayList<String> total = new ArrayList<>();
+    ArrayList<String> calculations = new ArrayList<>();
+    Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_memory_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         lv = (ListView) findViewById(R.id.listView);
 
-        final ArrayList<String> total = this.getIntent().getStringArrayListExtra("total");
+        total = this.getIntent().getStringArrayListExtra("total");
         Collections.reverse(total);
 
-        final ArrayList<String> calculations = this.getIntent().getStringArrayListExtra("calculation");
+        calculations = this.getIntent().getStringArrayListExtra("calculations");
         Collections.reverse(calculations);
 
-        String[] calculationsArr = new String[calculations.size()];
-        String[] result = new String[total.size()];
+        adapter = new ArrayAdapter<String>(this,
+                R.layout.customtv, total);
 
-        calculations.toArray(calculationsArr);
-        total.toArray(result);
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.customtv, result);
-
-        // Assign adapter to ListView
         lv.setAdapter(adapter);
 
-        // ListView Item Click Listener
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-
-                Intent intent = new Intent(MemoryListActivity.this, MainActivity.class);
-
+                intent = MemoryListActivity.this.getIntent();
                 intent.putExtra("total", total.get(position));
-                intent.putExtra("calculation", calculations.get(position));
+                intent.putExtra("calculations", calculations.get(position));
+                intent.putStringArrayListExtra("totalArr", total);
+                intent.putStringArrayListExtra("calculationsArr", calculations);
+                for (String i : calculations) {
+                    Log.d("lel", i);
+                }
 
                 setResult(Activity.RESULT_OK, intent);
                 finish();
             }
 
         });
-
+        registerForContextMenu(lv);
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_memory_list, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
+        setResult(Activity.RESULT_OK, intent);
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
+        int id = item.getItemId();
+        if (id == R.id.action_clear) {
+            total.clear();
+            calculations.clear();
+            adapter.clear();
+            intent = new Intent(MemoryListActivity.this, MainActivity.class);
+            setResult(Activity.RESULT_FIRST_USER, intent);
+            adapter.notifyDataSetChanged();
+        }
         //noinspection SimplifiableIfStatement
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        menu.add(1, 1, 1, "Delete");
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        int index = info.position;
+        total.remove(index);
+        calculations.remove(index);
+        adapter.notifyDataSetChanged();
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        // super.onBackPressed();
+        intent = MemoryListActivity.this.getIntent();
+        intent.putStringArrayListExtra("total", total);
+        intent.putStringArrayListExtra("calculations", calculations);
+        setResult(3, intent);
+        finish();
+    }
+
 }

@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, MemoryListActivity.class);
-                intent.putStringArrayListExtra("calculation", calculationsArr);
+                intent.putStringArrayListExtra("calculations", calculationsArr);
                 intent.putStringArrayListExtra("total", resultsArr);
                 startActivityForResult(intent, 1);
             }
@@ -66,8 +66,10 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         switch (requestCode) {
             case (1): {
                 if (resultCode == Activity.RESULT_OK) {
-                    if (data.getStringExtra("total") != null && data.getStringExtra("calculation") != null) {
-                        calculationET.setText(data.getStringExtra("calculation"));
+                    if (data.getStringExtra("total") != null && data.getStringExtra("calculations") != null) {
+                        calculationsArr = data.getStringArrayListExtra("calculationsArr");
+                        resultsArr = data.getStringArrayListExtra("totalArr");
+                        calculationET.setText(data.getStringExtra("calculations"));
                         resultET.setText(data.getStringExtra("total"));
                         isFromHistory = true;
                         input = 0.0;
@@ -75,6 +77,13 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                         isFirstInput = false;
                     }
                     break;
+                } else if (resultCode == Activity.RESULT_FIRST_USER) {
+                    calculationsArr.clear();
+                    resultsArr.clear();
+                } else if (resultCode == 3) {
+                    calculationsArr = data.getStringArrayListExtra("calculations");
+                    resultsArr = data.getStringArrayListExtra("total");
+
                 }
             }
         }
@@ -120,6 +129,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             public boolean onLongClick(View v) {
                 calculationET.setText("");
                 resultET.setText("");
+                calculationsArr.clear();
+                resultsArr.clear();
                 total = 0.0;
                 input = 0.0;
                 isFirstInput = true;
