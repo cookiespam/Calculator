@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     boolean isFirstInput = true; //check if is first time input
     boolean isAlternateInput = true;
     int clicked; //operand selector
-    ArrayList<String> calculations = new ArrayList<String>();
-    ArrayList<String> results = new ArrayList<String>();
+    ArrayList<String> calculationsArr = new ArrayList<String>();
+    ArrayList<String> resultsArr = new ArrayList<String>();
     NumberFormat nf = new DecimalFormat("###,###.###");
 
     @Override
@@ -53,15 +53,11 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, MemoryListActivity.class);
-                intent.putStringArrayListExtra("calculation", calculations);
-                intent.putStringArrayListExtra("total", results);
+                intent.putStringArrayListExtra("calculation", calculationsArr);
+                intent.putStringArrayListExtra("total", resultsArr);
                 startActivityForResult(intent, 1);
             }
         });
-//        if (this.getIntent().getStringExtra("total") != null && this.getIntent().getStringExtra("calculation") != null) {
-//            Log.d("lel", this.getIntent().getStringExtra("total"));
-//            Log.d("lel", this.getIntent().getStringExtra("calculation"));
-//        }
     }
 
     @Override
@@ -74,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                         Log.d("lel", data.getStringExtra("total"));
                         Log.d("lel", data.getStringExtra("calculation"));
                     }
-
                     break;
                 }
             }
@@ -239,9 +234,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 }
                 lockResultPanel();
                 isFirstInput = true;
-                calculations.add(calculation.getText().toString());
+                calculationsArr.add(calculation.getText().toString() + result.getText().toString());
                 calculation.setText("");
-                results.add(nf.format(total));
+                resultsArr.add(nf.format(total));
                 result.setText(nf.format(total));
                 decimalSwitch = true;
                 break;
