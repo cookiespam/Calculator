@@ -21,9 +21,9 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements OnClickListener {
     Button one, two, three, four, five, six, seven, eight, nine, zero, plus, minus, multiply, divide, clear, eq, decimal;
     Button history;
-    EditText calculation;
-    EditText result;
-    HorizontalScrollView calculationScroll, resultPanel;
+    EditText calculationET;
+    EditText resultET;
+    HorizontalScrollView calculationPanel, resultPanel;
     boolean decimalSwitch = true; //enables/disables decimals
     double total = 0.0;
     double input = 0.0;
@@ -41,11 +41,11 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        calculation = (EditText) findViewById(R.id.calculation);
-        result = (EditText) findViewById(R.id.result);
-        calculation.setTextColor(0xff757575);
-        result.setTextColor(0xff333333);
-        calculationScroll = (HorizontalScrollView) findViewById(R.id.calculationScroll);
+        calculationET = (EditText) findViewById(R.id.calculation);
+        resultET = (EditText) findViewById(R.id.result);
+        calculationET.setTextColor(0xff757575);
+        resultET.setTextColor(0xff333333);
+        calculationPanel = (HorizontalScrollView) findViewById(R.id.calculationPanel);
         resultPanel = (HorizontalScrollView) findViewById(R.id.resultsPanel);
         addListenerOnButton();
         history = (Button) findViewById(R.id.history);
@@ -114,8 +114,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         clear.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                calculation.setText("");
-                result.setText("");
+                calculationET.setText("");
+                resultET.setText("");
                 total = 0.0;
                 input = 0.0;
                 isFirstInput = true;
@@ -133,52 +133,52 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 
             case R.id.one:
                 newInput();
-                result.append("1");
+                resultET.append("1");
                 break;
 
             case R.id.two:
                 newInput();
-                result.append("2");
+                resultET.append("2");
                 break;
 
             case R.id.three:
                 newInput();
-                result.append("3");
+                resultET.append("3");
                 break;
 
             case R.id.four:
                 newInput();
-                result.append("4");
+                resultET.append("4");
                 break;
 
             case R.id.five:
                 newInput();
-                result.append("5");
+                resultET.append("5");
                 break;
 
             case R.id.six:
                 newInput();
-                result.append("6");
+                resultET.append("6");
                 break;
 
             case R.id.seven:
                 newInput();
-                result.append("7");
+                resultET.append("7");
                 break;
 
             case R.id.eight:
                 newInput();
-                result.append("8");
+                resultET.append("8");
                 break;
 
             case R.id.nine:
                 newInput();
-                result.append("9");
+                resultET.append("9");
                 break;
 
             case R.id.zero:
                 newInput();
-                result.append("0");
+                resultET.append("0");
                 break;
 
             case R.id.plus:
@@ -198,9 +198,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 break;
 
             case R.id.decimal:
-                if (!result.getText().toString().isEmpty() && !isTotal) {
-                    if (!result.getText().toString().endsWith(".") && decimalSwitch) {
-                        result.append(".");
+                if (!resultET.getText().toString().isEmpty() && !isTotal) {
+                    if (!resultET.getText().toString().endsWith(".") && decimalSwitch) {
+                        resultET.append(".");
                         decimalSwitch = false;
                     }
                 }
@@ -209,15 +209,15 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             case R.id.clear:
 
                 if (!isTotal) {
-                    int length = result.getText().length();
+                    int length = resultET.getText().length();
                     if (length > 0) {
-                        result.getText().delete(length - 1, length);
+                        resultET.getText().delete(length - 1, length);
                     }
                 }
                 break;
 
             case R.id.eq:
-                input = Double.parseDouble(result.getText().toString().replaceAll(",", ""));
+                input = Double.parseDouble(resultET.getText().toString().replaceAll(",", ""));
                 switch (clicked) {
                     case 1:
                         total += input;
@@ -234,10 +234,10 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 }
                 lockResultPanel();
                 isFirstInput = true;
-                calculationsArr.add(calculation.getText().toString() + result.getText().toString());
-                calculation.setText("");
+                calculationsArr.add(calculationET.getText().toString() + resultET.getText().toString());
+                calculationET.setText("");
                 resultsArr.add(nf.format(total));
-                result.setText(nf.format(total));
+                resultET.setText(nf.format(total));
                 decimalSwitch = true;
                 break;
         }
@@ -245,24 +245,24 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     }
 
     private void calculate(int unicode, int operand) {
-        if (!result.getText().toString().equalsIgnoreCase("")) {
-            input = Double.parseDouble(result.getText().toString().replaceAll(",", ""));
+        if (!resultET.getText().toString().equalsIgnoreCase("")) {
+            input = Double.parseDouble(resultET.getText().toString().replaceAll(",", ""));
         } else {
             input = 0;
         }
 
-        calculation.append(result.getText());
-        calculation.append(getUnicode(unicode));
+        calculationET.append(resultET.getText());
+        calculationET.append(getUnicode(unicode));
 
         if (isFirstInput) {
             total = input;
             clicked = operand;
             result(clicked);
             isFirstInput = false;
-            result.setText("");
+            resultET.setText("");
         } else {
             result(clicked);
-            result.setText(nf.format(total));
+            resultET.setText(nf.format(total));
             clicked = operand;
         }
         input = 0.0;
@@ -299,15 +299,15 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 
     private void newInput() {
         if (isTotal) {
-            result.setText("");
+            resultET.setText("");
         }
         isTotal = false;
     }
 
     private void scrollFromRight() {
-        calculationScroll.postDelayed(new Runnable() {
+        calculationPanel.postDelayed(new Runnable() {
             public void run() {
-                calculationScroll.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
+                calculationPanel.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
             }
         }, 100L);
         resultPanel.postDelayed(new Runnable() {
