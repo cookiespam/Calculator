@@ -1,9 +1,11 @@
 package com.it2107.assignment.assignment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.widget.HorizontalScrollView;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements OnClickListener {
     Button one, two, three, four, five, six, seven, eight, nine, zero, plus, minus, multiply, divide, clear, eq, decimal;
@@ -21,12 +24,15 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     EditText calculation;
     EditText result;
     HorizontalScrollView calculationScroll, resultPanel;
-    boolean decimalSwitch = true;
+    boolean decimalSwitch = true; //enables/disables decimals
     double total = 0.0;
     double input = 0.0;
-    boolean isTotal = false;
-    boolean isFirstInput = true;
-    int clicked;
+    boolean isTotal = false; //check is final result or not (after eq is invoked)
+    boolean isFirstInput = true; //check if is first time input
+    boolean isAlternateInput = true;
+    int clicked; //operand selector
+    ArrayList<String> calculations = new ArrayList<String>();
+    ArrayList<String> results = new ArrayList<String>();
     NumberFormat nf = new DecimalFormat("###,###.###");
 
     @Override
@@ -46,9 +52,33 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         history.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, MemoryListActivity.class));
+                Intent intent = new Intent(MainActivity.this, MemoryListActivity.class);
+                intent.putStringArrayListExtra("calculation", calculations);
+                intent.putStringArrayListExtra("total", results);
+                startActivityForResult(intent, 1);
             }
         });
+//        if (this.getIntent().getStringExtra("total") != null && this.getIntent().getStringExtra("calculation") != null) {
+//            Log.d("lel", this.getIntent().getStringExtra("total"));
+//            Log.d("lel", this.getIntent().getStringExtra("calculation"));
+//        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case (1): {
+                if (resultCode == Activity.RESULT_OK) {
+                    if (data.getStringExtra("total") != null && data.getStringExtra("calculation") != null) {
+                        Log.d("lel", data.getStringExtra("total"));
+                        Log.d("lel", data.getStringExtra("calculation"));
+                    }
+
+                    break;
+                }
+            }
+        }
     }
 
     public void addListenerOnButton() {
@@ -96,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 isFirstInput = true;
                 decimalSwitch = true;
                 isTotal = false;
+                isAlternateInput = true;
                 return true;
             }
         });
@@ -208,7 +239,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 }
                 lockResultPanel();
                 isFirstInput = true;
+                calculations.add(calculation.getText().toString());
                 calculation.setText("");
+                results.add(nf.format(total));
                 result.setText(nf.format(total));
                 decimalSwitch = true;
                 break;
