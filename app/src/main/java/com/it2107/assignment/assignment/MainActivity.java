@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     boolean isTotal = false; //check is final result or not (after eq is invoked)
     boolean isFirstInput = true; //check if is first time input
     boolean isAlternateInput = true;
+    boolean isFromHistory = false;
     int clicked; //operand selector
     ArrayList<String> calculationsArr = new ArrayList<String>();
     ArrayList<String> resultsArr = new ArrayList<String>();
@@ -67,8 +67,12 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             case (1): {
                 if (resultCode == Activity.RESULT_OK) {
                     if (data.getStringExtra("total") != null && data.getStringExtra("calculation") != null) {
-                        Log.d("lel", data.getStringExtra("total"));
-                        Log.d("lel", data.getStringExtra("calculation"));
+                        calculationET.setText(data.getStringExtra("calculation"));
+                        resultET.setText(data.getStringExtra("total"));
+                        isFromHistory = true;
+                        input = 0.0;
+                        total = 0.0;
+                        isFirstInput = false;
                     }
                     break;
                 }
@@ -251,7 +255,10 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             input = 0;
         }
 
-        calculationET.append(resultET.getText());
+        if (!isFromHistory) {
+            calculationET.append(resultET.getText());
+        }
+
         calculationET.append(getUnicode(unicode));
 
         if (isFirstInput) {
@@ -267,6 +274,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         }
         input = 0.0;
         lockResultPanel();
+        isFromHistory = false;
     }
 
     private double result(int clicked) {
