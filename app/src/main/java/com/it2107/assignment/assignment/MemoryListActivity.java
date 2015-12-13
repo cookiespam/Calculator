@@ -108,7 +108,6 @@ public class MemoryListActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        // super.onBackPressed();
         intent = MemoryListActivity.this.getIntent();
         intent.putStringArrayListExtra("total", total);
         intent.putStringArrayListExtra("calculations", calculations);
