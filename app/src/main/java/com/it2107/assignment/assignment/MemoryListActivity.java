@@ -33,11 +33,12 @@ public class MemoryListActivity extends AppCompatActivity {
         lv = (ListView) findViewById(R.id.listView);
 
         total = this.getIntent().getStringArrayListExtra("total");
-        Collections.reverse(total);
-
         calculations = this.getIntent().getStringArrayListExtra("calculations");
+        Collections.reverse(total);
         Collections.reverse(calculations);
-
+        for (String i : total) {
+            Log.d("lel", i);
+        }
         adapter = new ArrayAdapter<String>(this,
                 R.layout.customtv, total);
 

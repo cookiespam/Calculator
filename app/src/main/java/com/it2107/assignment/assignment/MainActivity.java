@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +16,7 @@ import android.widget.HorizontalScrollView;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity implements OnClickListener {
     Button one, two, three, four, five, six, seven, eight, nine, zero, plus, minus, multiply, divide, clear, eq, decimal;
@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, MemoryListActivity.class);
+
                 intent.putStringArrayListExtra("calculations", calculationsArr);
                 intent.putStringArrayListExtra("total", resultsArr);
                 startActivityForResult(intent, 1);
@@ -85,9 +86,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                     if (data.getStringArrayListExtra("calculations") != null) {
                         calculationsArr = data.getStringArrayListExtra("calculations");
                         resultsArr = data.getStringArrayListExtra("total");
-                    } else {
-                        isFirstInput = true;
                     }
+                    Collections.reverse(resultsArr);
+                    Collections.reverse(calculationsArr);
                 }
             }
         }
@@ -268,15 +269,15 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     }
 
     private void calculate(int unicode, int operand) {
+
+        if (!isFromHistory) {
+            calculationET.append(resultET.getText());
+        }
+
         if (!resultET.getText().toString().equalsIgnoreCase("")) {
             input = Double.parseDouble(resultET.getText().toString().replaceAll(",", ""));
         } else {
             input = 0;
-        }
-        Log.d("input", Double.toString(input));
-        Log.d("total", Double.toString(total));
-        if (!isFromHistory) {
-            calculationET.append(resultET.getText());
         }
 
         calculationET.append(getUnicode(unicode));
