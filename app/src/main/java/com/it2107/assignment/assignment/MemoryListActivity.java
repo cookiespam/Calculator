@@ -3,6 +3,7 @@ package com.it2107.assignment.assignment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -29,7 +30,6 @@ public class MemoryListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_memory_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         lv = (ListView) findViewById(R.id.listView);
 
         total = this.getIntent().getStringArrayListExtra("total");
@@ -101,6 +101,8 @@ public class MemoryListActivity extends AppCompatActivity {
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         int index = info.position;
+        Snackbar.make(findViewById(android.R.id.content), calculations.get(index) + " = " + total.get(index) + " has been deleted!", Snackbar.LENGTH_LONG)
+                .show();
         total.remove(index);
         calculations.remove(index);
         adapter.notifyDataSetChanged();
