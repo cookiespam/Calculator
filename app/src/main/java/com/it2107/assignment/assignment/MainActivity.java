@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                         resultET.setText(data.getStringExtra("total"));
                         isFromHistory = true;
                         input = 0.0;
-                        total = 0.0;
+                        total = Double.parseDouble(data.getStringExtra("total"));
                         isFirstInput = false;
                     }
                     break;
@@ -299,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     }
 
     private double result(int clicked) {
-        if (!isFirstInput) {
+        if (!isFirstInput && !isFromHistory) {
 
             switch (clicked) {
                 case 1:
