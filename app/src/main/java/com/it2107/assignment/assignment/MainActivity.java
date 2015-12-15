@@ -271,7 +271,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     private void calculate(int unicode, int operand) {
 
         if (!isFromHistory) {
-            calculationET.append(resultET.getText());
+            calculationET.append(resultET.getText().toString());
         }
 
         if (!resultET.getText().toString().equalsIgnoreCase("")) {
