@@ -16,4 +16,5 @@
         <item name="android:background">@drawable/button_operand_selector</item>
         <item name="android:textColor">?attr/colorPrimary</item>
     </style>
+
 </resources>
