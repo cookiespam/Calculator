@@ -6,4 +6,4 @@
     android:layout_gravity="end"
     android:gravity="end"
     android:padding="16dp"
-    android:textSize="18sp" />
+    android:textSize="28sp" />
