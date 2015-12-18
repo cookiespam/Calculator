@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,14 +15,31 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 
 public class MemoryListActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     ListView lv;
     ArrayList<String> total = new ArrayList<>();
     ArrayList<String> calculations = new ArrayList<>();
+    ArrayList<String> display = new ArrayList<>();
     Intent intent;
+
+    public static <T> ArrayList<String> merge(Collection<String> a, Collection<String> b) {
+        Iterator<String> itA = a.iterator();
+        Iterator<String> itB = b.iterator();
+        ArrayList<String> result = new ArrayList<>();
+
+        while (itA.hasNext() || itB.hasNext()) {
+            if (itA.hasNext() && itB.hasNext())
+                result.add(itA.next().toString() + "\n= " + itB.next().toString());
+        }
+
+        return result;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,11 +52,11 @@ public class MemoryListActivity extends AppCompatActivity {
         calculations = this.getIntent().getStringArrayListExtra("calculations");
         Collections.reverse(total);
         Collections.reverse(calculations);
-        for (String i : total) {
-            Log.d("lel", i);
-        }
+
+        display = merge(calculations, total);
+
         adapter = new ArrayAdapter<String>(this,
-                R.layout.customtv, total);
+                R.layout.customtv, display);
 
         lv.setAdapter(adapter);
 
@@ -54,9 +70,6 @@ public class MemoryListActivity extends AppCompatActivity {
                 intent.putExtra("calculations", calculations.get(position));
                 intent.putStringArrayListExtra("totalArr", total);
                 intent.putStringArrayListExtra("calculationsArr", calculations);
-                for (String i : calculations) {
-                    Log.d("lel", i);
-                }
 
                 setResult(Activity.RESULT_OK, intent);
                 finish();
@@ -105,6 +118,7 @@ public class MemoryListActivity extends AppCompatActivity {
                 .show();
         total.remove(index);
         calculations.remove(index);
+        display.remove(index);
         adapter.notifyDataSetChanged();
         return true;
     }
