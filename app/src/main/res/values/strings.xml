@@ -18,7 +18,7 @@
     <string name="minus">\u002D</string>
     <string name="divide">\u00F7</string>
     <string name="multiply">\u00D7</string>
-    <string name="clear">DEL</string>
+    <string name="clear">C</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

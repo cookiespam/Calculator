@@ -44,8 +44,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         setSupportActionBar(toolbar);
         calculationET = (EditText) findViewById(R.id.calculation);
         resultET = (EditText) findViewById(R.id.result);
-        calculationET.setTextColor(0xff757575);
-        resultET.setTextColor(0xff333333);
+//        calculationET.setTextColor(0xff757575);
+//        resultET.setTextColor(ff696969);
         calculationPanel = (HorizontalScrollView) findViewById(R.id.calculationPanel);
         resultPanel = (HorizontalScrollView) findViewById(R.id.resultsPanel);
         addListenerOnButton();
@@ -148,7 +148,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     }
 
     public void onClick(View v) {
-
         switch (v.getId()) {
 
             case R.id.one:
@@ -259,17 +258,25 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 lockResultPanel();
                 isFirstInput = true;
                 calculationsArr.add(calculationET.getText().toString() + resultET.getText().toString());
-                calculationET.setText("");
+
+//                if(isTotal){
+//                    calculationET.append(resultET.getText().toString());
+//                } else {
+                    calculationET.setText("");
+//                }
+
                 resultsArr.add(nf.format(total));
                 resultET.setText(nf.format(total));
                 decimalSwitch = true;
                 break;
         }
+
         scrollFromRight();
     }
 
     private void calculate(int unicode, int operand) {
 
+//        calculationET.setText("");
         if (!isFromHistory) {
             calculationET.append(resultET.getText().toString());
         }

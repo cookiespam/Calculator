@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.it2107.calc.calculator.MainActivity"
     tools:showIn="@layout/activity_main">
@@ -12,17 +13,23 @@
     <LinearLayout
         android:id="@+id/numberContainers"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_weight="2.5"
         android:baselineAligned="false"
         android:orientation="vertical"
-        android:padding="24dp">
+        android:paddingBottom="2.5sp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:paddingTop="24dp">
 
         <HorizontalScrollView
             android:id="@+id/calculationPanel"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="2.3"
             android:background="@android:color/transparent"
             android:fillViewport="true"
+            android:paddingRight="0dp"
             android:scrollbars="none">
 
             <EditText
@@ -34,13 +41,15 @@
                 android:focusable="false"
                 android:gravity="end"
                 android:inputType="none"
-                android:textSize="32sp" />
+                android:textColor="#8C000000"
+                android:textSize="24sp" />
         </HorizontalScrollView>
 
         <HorizontalScrollView
             android:id="@+id/resultsPanel"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="@android:color/transparent"
             android:fillViewport="true"
             android:scrollbars="none">
@@ -54,14 +63,18 @@
                 android:focusable="false"
                 android:gravity="end"
                 android:inputType="none"
+                android:textColor="#B3000000"
                 android:textSize="60sp" />
         </HorizontalScrollView>
+
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="fill_parent"
         android:layout_below="@+id/numberContainers"
+        android:layout_weight="1"
+        android:background="#E9E9E9"
         android:baselineAligned="false"
         android:orientation="horizontal">
 
@@ -69,20 +82,23 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.3"
-            android:background="#EFEFEF"
+            android:background="#E9E9E9"
             android:baselineAligned="false"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="2.5sp">
 
             <Button
                 android:id="@+id/seven"
                 style="@style/button_numeric"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="3.5sp"
                 android:layout_weight="0.25"
                 android:gravity="center"
+                android:padding="7dp"
+                android:stateListAnimator="@null"
                 android:text="@string/seven"
                 android:textSize="30sp" />
-            <!--android:background="@drawable/button_numeric"/>-->
 
 
             <Button
@@ -90,8 +106,11 @@
                 style="@style/button_numeric"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="3.5sp"
                 android:layout_weight="0.25"
                 android:gravity="center"
+                android:padding="7dp"
+                android:stateListAnimator="@null"
                 android:text="@string/four"
                 android:textSize="30sp" />
 
@@ -100,8 +119,11 @@
                 style="@style/button_numeric"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="3.5sp"
                 android:layout_weight="0.25"
                 android:gravity="center"
+                android:padding="7dp"
+                android:stateListAnimator="@null"
                 android:text="@string/one"
                 android:textSize="30sp" />
 
@@ -110,8 +132,11 @@
                 style="@style/button_numeric"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="3.5sp"
                 android:layout_weight="0.25"
                 android:gravity="center"
+                android:padding="7dp"
+                android:stateListAnimator="@null"
                 android:text="@string/decimal"
                 android:textSize="30sp" />
 
@@ -121,17 +146,21 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.3"
-            android:background="#EFEFEF"
+            android:background="#E9E9E9"
             android:baselineAligned="false"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="2.5sp">
 
             <Button
                 android:id="@+id/eight"
                 style="@style/button_numeric"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="3.5sp"
                 android:layout_weight="0.25"
                 android:gravity="center"
+                android:padding="7dp"
+                android:stateListAnimator="@null"
                 android:text="@string/eight"
                 android:textSize="30sp" />
 
@@ -140,8 +169,11 @@
                 style="@style/button_numeric"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="3.5sp"
                 android:layout_weight="0.25"
                 android:gravity="center"
+                android:padding="7dp"
+                android:stateListAnimator="@null"
                 android:text="@string/five"
                 android:textSize="30sp" />
 
@@ -150,8 +182,11 @@
                 style="@style/button_numeric"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="3.5sp"
                 android:layout_weight="0.25"
                 android:gravity="center"
+                android:padding="7dp"
+                android:stateListAnimator="@null"
                 android:text="@string/two"
                 android:textSize="30sp" />
 
@@ -160,8 +195,11 @@
                 style="@style/button_numeric"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="3.5sp"
                 android:layout_weight="0.25"
                 android:gravity="center"
+                android:padding="7dp"
+                android:stateListAnimator="@null"
                 android:text="@string/zero"
                 android:textSize="30sp" />
 
@@ -171,17 +209,21 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.3"
-            android:background="#EFEFEF"
+            android:background="#E9E9E9"
             android:baselineAligned="false"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="2.5sp">
 
             <Button
                 android:id="@+id/nine"
                 style="@style/button_numeric"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="3.5sp"
                 android:layout_weight="0.25"
                 android:gravity="center"
+                android:padding="7dp"
+                android:stateListAnimator="@null"
                 android:text="@string/nine"
                 android:textSize="30sp" />
 
@@ -190,8 +232,11 @@
                 style="@style/button_numeric"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="3.5sp"
                 android:layout_weight="0.25"
                 android:gravity="center"
+                android:padding="7dp"
+                android:stateListAnimator="@null"
                 android:text="@string/six"
                 android:textSize="30sp" />
 
@@ -200,8 +245,11 @@
                 style="@style/button_numeric"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="3.5sp"
                 android:layout_weight="0.25"
                 android:gravity="center"
+                android:padding="7dp"
+                android:stateListAnimator="@null"
                 android:text="@string/three"
                 android:textSize="30sp" />
 
@@ -210,9 +258,12 @@
                 style="@style/button_numeric"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="3.5sp"
                 android:layout_weight="0.25"
                 android:contentDescription="@string/desc_eq"
                 android:gravity="center"
+                android:padding="7dp"
+                android:stateListAnimator="@null"
                 android:text="@string/eq"
                 android:textSize="30sp" />
 
@@ -222,17 +273,20 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.15"
-            android:background="#EFEFEF"
+            android:background="#E9E9E9"
             android:baselineAligned="false"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="2.5sp">
 
             <Button
                 android:id="@+id/clear"
                 style="@style/button_operand"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="3.5sp"
                 android:layout_weight="0.2"
                 android:gravity="center"
+                android:stateListAnimator="@null"
                 android:text="@string/clear"
                 android:textSize="22sp" />
 
@@ -241,8 +295,10 @@
                 style="@style/button_operand"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="3.5sp"
                 android:layout_weight="0.2"
                 android:gravity="center"
+                android:stateListAnimator="@null"
                 android:text="@string/divide"
                 android:textSize="30sp" />
 
@@ -251,8 +307,10 @@
                 style="@style/button_operand"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="3.5sp"
                 android:layout_weight="0.2"
                 android:gravity="center"
+                android:stateListAnimator="@null"
                 android:text="@string/multiply"
                 android:textSize="30sp" />
 
@@ -261,8 +319,10 @@
                 style="@style/button_operand"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="3.5sp"
                 android:layout_weight="0.2"
                 android:gravity="center"
+                android:stateListAnimator="@null"
                 android:text="@string/minus"
                 android:textSize="30sp" />
 
@@ -271,12 +331,14 @@
                 style="@style/button_operand"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="3.5sp"
                 android:layout_weight="0.2"
                 android:gravity="center"
+                android:stateListAnimator="@null"
                 android:text="@string/plus"
                 android:textSize="30sp" />
         </LinearLayout>
 
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

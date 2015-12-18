@@ -19,7 +19,7 @@
 
     <style name="button_numeric" parent="android:style/Widget.Material.Button">
         <item name="android:background">@drawable/button_numeric_selector</item>
-        <item name="android:textColor">#696969</item>
+        <item name="android:textColor">#A6000000</item>
     </style>
 
     <style name="button_operand" parent="android:style/Widget.Material.Button">
