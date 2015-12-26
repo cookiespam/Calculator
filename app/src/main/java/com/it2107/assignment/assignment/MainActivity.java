@@ -1,3 +1,7 @@
+/*
+* Created by : Liang Jia Sheng 140462E Group 3
+* git commits avaliable
+* */
 package com.it2107.assignment.assignment;
 
 import android.app.Activity;
@@ -18,6 +22,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 
+
 public class MainActivity extends AppCompatActivity implements OnClickListener {
     Button one, two, three, four, five, six, seven, eight, nine, zero, plus, minus, multiply, divide, clear, eq, decimal;
     Button history;
@@ -29,7 +34,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     double input = 0.0;
     boolean isTotal = false; //check is final result or not (after eq is invoked)
     boolean isFirstInput = true; //check if is first time input
-    boolean isAlternateInput = true;
     boolean isFromHistory = false;
     int clicked; //operand selector
     ArrayList<String> calculationsArr = new ArrayList<>();
@@ -44,8 +48,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         setSupportActionBar(toolbar);
         calculationET = (EditText) findViewById(R.id.calculation);
         resultET = (EditText) findViewById(R.id.result);
-//        calculationET.setTextColor(0xff757575);
-//        resultET.setTextColor(ff696969);
+
         calculationPanel = (HorizontalScrollView) findViewById(R.id.calculationPanel);
         resultPanel = (HorizontalScrollView) findViewById(R.id.resultsPanel);
         addListenerOnButton();
@@ -141,7 +144,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 isFirstInput = true;
                 decimalSwitch = true;
                 isTotal = false;
-                isAlternateInput = true;
                 return true;
             }
         });
@@ -340,6 +342,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         isTotal = false;
     }
 
+    /* from somewhere in stackoverflow.com */
     private void scrollFromRight() {
         calculationPanel.postDelayed(new Runnable() {
             public void run() {
